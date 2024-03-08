@@ -27,7 +27,7 @@ const getAllUsers = (req, res) => {
 
 const getSingleUser = (req,res)=>{
     const {id} = req.params
-    User.getOneUser(id,(err)=>{
+    User.getOneUser(id,(err,data)=>{
         if (err)
         return res.status(400).json({ message: "error happend", err: err });
   
@@ -67,5 +67,5 @@ const deleteUser = (req,res)=>{
 }
 module.exports = {
   createUser,
-  getAllUsers,updateUser,deleteUser
+  getAllUsers,updateUser,deleteUser,getSingleUser
 };

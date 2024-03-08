@@ -27,13 +27,13 @@ const getAllCompetation = (req, res) => {
 
 const getSingleCompetation = (req,res)=>{
     const {id} = req.params
-    Competation.getOneCompetation(id,(err)=>{
+    Competation.getOneCompetation(id,(err,result)=>{
         if (err)
         return res.status(400).json({ message: "error happend", err: err });
   
       return res
         .status(200)
-        .json({ message: " successfull one" });
+        .json({ message: " successfull one",data:result });
     })
 }
 

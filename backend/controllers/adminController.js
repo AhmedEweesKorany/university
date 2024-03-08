@@ -22,7 +22,7 @@ const getAllAdmins = (req,res)=>{
 
 const getSingleAdmin = (req,res)=>{
     const {id} = req.params
-    Admin.getOneAdmin(id,(err)=>{
+    Admin.getOneAdmin(id,(err,data)=>{
         if (err)
         return res.status(400).json({ message: "error happend", err: err });
   
