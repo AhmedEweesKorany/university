@@ -14,6 +14,7 @@ const DynamicHomeNewsLetter = dynamic(() => import('../components/home/newslette
 const Home: NextPageWithLayout = () => {
   return (
     <>
+  
       <DynamicHomeHero />
       <DynamicHomePopularCourse />
       <DynamicHomeFeature />

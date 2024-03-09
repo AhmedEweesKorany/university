@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import { CssBaseline } from '@mui/material'
@@ -10,6 +10,7 @@ import 'slick-carousel/slick/slick.css'
 import '@/styles/globals.css'
 import '@/styles/react-slick.css'
 import { NextPageWithLayout } from '@/interfaces/layout'
+import MyContext from "../Context/Context"
 // import 'slick-carousel/slick/slick-theme.css'
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -21,12 +22,17 @@ type AppPropsWithLayout = AppProps & {
 }
 
 const App: FC<AppPropsWithLayout> = (props: AppPropsWithLayout) => {
+
+  const [data,setData] = useState()
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout || ((page) => page)
 
   return (
+    <MyContext.Provider value={{data,setData}}>
+
+
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
@@ -38,6 +44,7 @@ const App: FC<AppPropsWithLayout> = (props: AppPropsWithLayout) => {
         {getLayout(<Component {...pageProps} />)}
       </MUIProvider>
     </CacheProvider>
+    </MyContext.Provider>
   )
 }
 

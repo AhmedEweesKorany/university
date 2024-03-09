@@ -23,16 +23,29 @@ const User = {
   },
 
   // create a new user
-  createUser:  (userdata, callback) => {
+  createUser: (userdata, callback) => {
     const { username, email, password } = userdata;
-    const hashedPassword =  bcrypt.hashSync(password, 10);
-    const query =
-      "INSERT INTO `users`( `user_name`, `user_email`, `user_password`) VALUES (?,?,?)";
-    db.query(query, [username, email, hashedPassword], (err, result) => {
-      if (err) return callback(err, null);
-      return callback(null, result);
+    db.query("SELECT * FROM `users` WHERE user_email = ?",[email],(err,data)=>{
+        if(err) {
+            return callback(err, null);
+        }
+        if(data && data.length > 0){
+            return callback("User already exists", null);
+        } else {
+            const hashedPassword =  bcrypt.hashSync(password, 10);
+            const query =
+              "INSERT INTO `users`( `user_name`, `user_email`, `user_password`) VALUES (?,?,?)";
+            db.query(query, [username, email, hashedPassword], (err, result) => {
+              if (err) {
+                console.log("error:", err);
+                return callback(err, null);
+              }
+              return callback(null, result);
+            });
+        }  
     });
-  },
+},
+
 
   // updaet certain user by id
   updateUser: (id, data, callback) => {
