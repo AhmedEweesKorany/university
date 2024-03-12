@@ -3,6 +3,7 @@ const userController = require("../controllers/userController");
 const cometationController = require("../controllers/competationController");
 const eventController = require("../controllers/eventController");
 const authController = require("../controllers/authController");
+const teamController = require("../controllers/teamController")
 const router = express.Router();
 const verify = require("../middleware/Verify");
 
@@ -12,6 +13,14 @@ router.get("/getAllusers", userController.getAllUsers);
 router.get("/getoneuser/:id", userController.getSingleUser);
 router.put("/updateuser/:id", userController.updateUser);
 router.delete("/deleteuser/:id", userController.deleteUser);
+router.post("/addusertocomp",userController.addUserToComp)
+router.get("/changeteamstate",userController.changeTeamState)
+
+
+//teams operations 
+
+router.get("/getteambycode",teamController.getTeamByCode)
+router.post("/addmembertoteam",teamController.addMember)
 
 //competation operations
 
@@ -23,6 +32,7 @@ router.delete("/deletecomp/:id", cometationController.deleteCompetation);
 // Event operations
 router.get("/getallevents", eventController.getAllEvents);
 router.get("/getoneevent/:id", eventController.getSingleEvent);
+router.get("/geteventincomp/:id", eventController.getEventInComp);
 router.post("/createevent", eventController.createEvent);
 router.delete("/deleteevent/:id", eventController.deleteEvent);
 

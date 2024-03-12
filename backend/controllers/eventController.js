@@ -33,6 +33,18 @@ const getSingleEvent = (req, res) => {
   });
 };
 
+// get event with specifc compeation
+const getEventInComp = (req, res) => {
+  const { id } = req.params;
+  Event.getEventWithComp(id, (err,result) => {
+    if (err)
+      return res.status(400).json({ message: "error happend", err: err });
+
+    return res.status(200).json({ message: " successfull one",data:result });
+  });
+};
+
+
 // update event
 
 // const updateUser = (req,res)=>{
@@ -63,5 +75,5 @@ const deleteEvent = (req, res) => {
   });
 };
 module.exports = {
-  createEvent,deleteEvent,getAllEvents,getSingleEvent
+  createEvent,deleteEvent,getAllEvents,getSingleEvent,getEventInComp
 };

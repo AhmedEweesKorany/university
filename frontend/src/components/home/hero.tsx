@@ -138,12 +138,12 @@ const HomeHero: FC = () => {
               <Box sx={{ mb: 4, width: { xs: '100%', md: '70%' } }}>
                 <Typography sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
                   {
-                    "Let's take an online course to improve your skills in a different way, you can set your own study time according to your learning speed. So you san study comfortable and absorb tge material easily."
+                    "Let's take an online competations to improve your skills in a different way, you can apply to any competation and start. So you can improve your skills and compete with your parteners."
                   }
                 </Typography>
               </Box>
               <Box sx={{ '& button': { mr: 2 } }}>
-                <ScrollLink to="popular-course" spy={true} smooth={true} offset={0} duration={350}>
+                <ScrollLink to="competations" spy={true} smooth={true} offset={0} duration={350}>
                   <StyledButton color="primary" size="large" variant="contained">
                     Get Started
                   </StyledButton>
@@ -190,10 +190,10 @@ const HomeHero: FC = () => {
                   component="h6"
                   sx={{ color: 'secondary.main', fontSize: '1.1rem', fontWeight: 700, mb: 0.5 }}
                 >
-                  Certificate
+                  Ranking
                 </Typography>
                 <Typography variant="subtitle1" sx={{ color: 'text.secondary', lineHeight: 1.3 }}>
-                  There are certificates for all courses.
+                  There are Ranking for all Users and Teams.
                 </Typography>
               </Box>
             </Box>

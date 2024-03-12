@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { useRouter } from "next/router";
 import MyContext from "@/Context/Context";
 import  { jwtDecode } from "jwt-decode"
+import { match } from "assert";
 
 
 function Login() {
@@ -15,6 +16,8 @@ function Login() {
   const {data,setData} = useContext(MyContext)
   console.log("data is ",data)
   const router = useRouter()
+  
+  
   const showSignIn =  () => {
     setIsSignUp(false);
   };
@@ -47,6 +50,25 @@ function Login() {
   e.preventDefault()
 
   try {
+    if(!password||!email|| !name ){
+      return Swal.fire({
+        title: "please compelte empty feilds!",
+        icon: "error"
+      });
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailRegex.test(email)){
+      return Swal.fire({
+        title: "invalid email!",
+        icon: "error"
+      });
+    }
+    if(password.length < 6){
+      return Swal.fire({
+        title: "password should be at least 6 chars",
+        icon: "error"
+      });
+    }
     const res = await axios.post("http://localhost:4010/adduser", {
       email: email,
       username:name,
@@ -57,6 +79,9 @@ function Login() {
       title: "Successful registration!",
       icon: "success"
     });
+    setEmail("")
+    setName("")
+    setPassword("")
 
   } catch (error) {
     Swal.fire({
@@ -85,12 +110,12 @@ function Login() {
           <form >
             <h1>Create Account</h1>
             <label htmlFor="email">Email</label>
-            <input type="email" placeholder="pigeon@nestcoop.com" required onChange={e=>setEmail(e.target.value)}  />
+            <input type="email" placeholder="pigeon@nestcoop.com" required onChange={e=>setEmail(e.target.value)} value={email}  />
 
             <label htmlFor="username">username</label>
             <input type="text" minLength={6} required placeholder="enter your name" onChange={(e)=>{
               setName(e.target.value)
-            }} />
+            }} value={name} />
             <label htmlFor="password">Password</label>
             <input
   type="password"
@@ -100,6 +125,7 @@ function Login() {
   onChange={(e)=>{
     setPassword(e.target.value)
   }}
+  value={password}
   // Change setPassworđ to setPassword
 />
 

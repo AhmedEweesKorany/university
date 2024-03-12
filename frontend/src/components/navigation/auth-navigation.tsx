@@ -30,4 +30,4 @@ const AuthNavigation: FC = () => {
   )
 }
 
-export default AuthNavigation
+export default AuthNavigation;

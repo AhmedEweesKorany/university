@@ -1,25 +1,23 @@
-import React, { FC } from 'react'
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import Slider, { Settings } from 'react-slick'
-import Container from '@mui/material/Container'
-import Typography from '@mui/material/Typography'
-import { useTheme, styled } from '@mui/material/styles'
-import { IconButton, useMediaQuery } from '@mui/material'
-import IconArrowBack from '@mui/icons-material/ArrowBack'
-import IconArrowForward from '@mui/icons-material/ArrowForward'
+import React, { FC, useEffect, useState } from 'react';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Slider, { Settings } from 'react-slick';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import { useTheme, styled } from '@mui/material/styles';
+import { IconButton, useMediaQuery } from '@mui/material';
+import IconArrowBack from '@mui/icons-material/ArrowBack';
+import IconArrowForward from '@mui/icons-material/ArrowForward';
+import { CourseCardItem } from '@/components/course';
+import axios from 'axios';
 
-import { data } from './popular-course.data'
-import { CourseCardItem } from '@/components/course'
-
-interface SliderArrowArrow {
-  onClick?: () => void
-  type: 'next' | 'prev'
-  className?: 'string'
+interface SliderArrowProps {
+  onClick?: () => void;
+  type: 'next' | 'prev';
+  className?: string;
 }
 
-const SliderArrow: FC<SliderArrowArrow> = (props) => {
-  const { onClick, type, className } = props
+const SliderArrow: FC<SliderArrowProps> = ({ onClick, type, className }) => {
   return (
     <IconButton
       sx={{
@@ -39,8 +37,8 @@ const SliderArrow: FC<SliderArrowArrow> = (props) => {
     >
       {type === 'next' ? <IconArrowForward sx={{ fontSize: 22 }} /> : <IconArrowBack sx={{ fontSize: 22 }} />}
     </IconButton>
-  )
-}
+  );
+};
 
 const StyledDots = styled('ul')(({ theme }) => ({
   '&.slick-dots': {
@@ -56,35 +54,39 @@ const StyledDots = styled('ul')(({ theme }) => ({
       },
     },
   },
-}))
+}));
 
 const HomePopularCourse: FC = () => {
-  const { breakpoints } = useTheme()
-  const matchMobileView = useMediaQuery(breakpoints.down('md'))
+  const { breakpoints } = useTheme();
+  const matchMobileView = useMediaQuery(breakpoints.down('md'));
+  const [cardData, setCardData] = useState([]);
+  useEffect(() => {
+    axios.get("http://localhost:4010/getallcomp").then(response => {
+      setCardData(response.data.data || []);
+    
+    });
+  }, []);
 
   const sliderConfig: Settings = {
     infinite: true,
     autoplay: true,
     speed: 300,
-    slidesToShow: matchMobileView ? 1 : 3,
+    slidesToShow: matchMobileView ? 1 : 2,
     slidesToScroll: 1,
     prevArrow: <SliderArrow type="prev" />,
     nextArrow: <SliderArrow type="next" />,
     dots: true,
-    appendDots: (dots) => <StyledDots>{dots}</StyledDots>,
+    appendDots: dots => <StyledDots>{dots}</StyledDots>,
     customPaging: () => (
       <Box sx={{ height: 8, width: 30, backgroundColor: 'divider', display: 'inline-block', borderRadius: 4 }} />
     ),
-  }
+  };
 
   return (
     <Box
-      id="popular-course"
+      id="competations"
       sx={{
-        pt: {
-          xs: 6,
-          md: 8,
-        },
+        pt: { xs: 6, md: 8 },
         pb: 14,
         backgroundColor: 'background.default',
       }}
@@ -102,22 +104,22 @@ const HomePopularCourse: FC = () => {
               }}
             >
               <Typography variant="h1" sx={{ mt: { xs: 0, md: -5 }, fontSize: { xs: 30, md: 48 } }}>
-                Most Popular Courses
+                Competitions
               </Typography>
             </Box>
           </Grid>
 
           <Grid item xs={12} md={9}>
             <Slider {...sliderConfig}>
-              {data.map((item) => (
-                <CourseCardItem key={String(item.id)} item={item} />
+              {cardData && cardData.map(item => (
+                <CourseCardItem key={String(item.id)} item={item} />  
               ))}
             </Slider>
           </Grid>
         </Grid>
       </Container>
     </Box>
-  )
-}
+  );
+};
 
-export default HomePopularCourse
+export default HomePopularCourse;

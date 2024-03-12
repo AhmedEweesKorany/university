@@ -27,7 +27,7 @@ const Auth = {
             // correct password
             // genrate access token
             const accessToken = jwt.sign({
-                id:user.user_id,isAdmin:user.isAdmin,isSuper:user.isSuper,username:user.user_name,email:user.user_email
+                id:user.user_id,isAdmin:user.isAdmin,isSuper:user.isSuper,username:user.user_name,email:user.user_email,isTeam:user.is_team
             }, "SecertKey");
             return callback(null, {
                 username:user.user_name,

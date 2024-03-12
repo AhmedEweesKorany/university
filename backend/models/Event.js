@@ -21,6 +21,14 @@ const Event = {
     });
   },
 
+  // get events in specific competation
+  getEventWithComp:(id,callback)=>{
+    const query = "SELECT * FROM `event` WHERE competation_id = ?";
+    db.query(query, [id], (err, result) => {
+      if (err) return callback(err, null);
+      return callback(null, result);
+    });
+  },
   // create a new events
   createEvent: (data, callback) => {
     const { event_title, event_des,event_type } = data;

@@ -8,15 +8,18 @@
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track,
 ::-webkit-scrollbar-corner {
   background: var(--color-background);
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--color-scrollbar);
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-track,
 ::-webkit-scrollbar-corner {
   background: var(--color-background);
@@ -34,6 +37,7 @@ body {
     transform: scale(1);
     opacity: 0.3;
   }
+
   to {
     -webkit-transform: scale(5);
     transform: scale(5);
@@ -47,9 +51,41 @@ body {
     transform: scale(1);
     opacity: 0.3;
   }
+
   to {
     -webkit-transform: scale(5);
     transform: scale(5);
     opacity: 0;
   }
+}
+
+
+/*single competations with it's events style*/
+
+.single-comp-container {
+  margin: 0 30px;
+
+  .header {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .events {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+  }
+}
+
+/*teams area*/
+.teams-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: 30px;
 }

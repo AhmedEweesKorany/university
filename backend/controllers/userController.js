@@ -65,7 +65,29 @@ const deleteUser = (req,res)=>{
         .json({ message: "user deleted successfully" });
     })
 }
+
+//add user to comp 
+const addUserToComp = (req,res)=>{
+  const userData = req.body;
+  User.addUserToComp(userData, (err, data) => {
+    if (err)
+      return res.status(400).json({ message: "error happend", err: err });
+
+    return res.status(200).json({ message: "user created successfully" });
+  });
+}
+
+
+const changeTeamState = (req,res)=>{
+  const id = req.query.id
+  User.changeTeamState(id,(err,data)=>{
+    if (err)
+    return res.status(400).json({ message: "error eweees", err: err });
+
+  return res.status(200).json({ message: "success" });
+  })
+}
 module.exports = {
   createUser,
-  getAllUsers,updateUser,deleteUser,getSingleUser
+  getAllUsers,updateUser,deleteUser,getSingleUser,addUserToComp,changeTeamState
 };

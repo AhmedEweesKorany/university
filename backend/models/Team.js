@@ -16,7 +16,8 @@ const Team = {
     });
   },
   addMember: (team_id, data, callback) => {
-    const { newMember } = data;
+    let newMember = data;
+    newMember = newMember + ","
     const query =
       "UPDATE `team` SET `team_members`= CONCAT(team_members,?) WHERE team_id = ?";
 
@@ -74,11 +75,20 @@ const Team = {
   },
 
   //get single team by id
-  getSingleTeam:(team_id,callback)=>
-  db.query("SELECT * FROM `team` WHERE team_id = ?",[team_id],(err,data)=>{
-    if(err) return callback(err,null)
-    return callback(null,data)
-  })
+  getSingleTeam:(team_id,callback)=>{
+    db.query("SELECT * FROM `team` WHERE team_id = ?",[team_id],(err,data)=>{
+      if(err) return callback(err,null)
+      return callback(null,data)
+    })
+  },
+
+
+  getTeamByCode : (code,callback)=>{
+    db.query("SELECT * FROM `team` WHERE team_code = ?",[code],(err,data)=>{
+      if(err) return callback(err,null)
+      return callback(null,data)
+    })
+  }
 };
 
 module.exports = Team;

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import { CssBaseline } from '@mui/material'
@@ -11,6 +11,8 @@ import '@/styles/globals.css'
 import '@/styles/react-slick.css'
 import { NextPageWithLayout } from '@/interfaces/layout'
 import MyContext from "../Context/Context"
+import  { jwtDecode } from "jwt-decode"
+
 // import 'slick-carousel/slick/slick-theme.css'
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -24,7 +26,18 @@ type AppPropsWithLayout = AppProps & {
 const App: FC<AppPropsWithLayout> = (props: AppPropsWithLayout) => {
 
   const [data,setData] = useState()
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+  useEffect(() => {
+    // Perform localStorage action
+    const item = localStorage.getItem('token')
+    if(item){
+
+      setData(jwtDecode(item))
+    }
+  
+  }, [])
+
+  if(data) console.log(data)
+    const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout || ((page) => page)

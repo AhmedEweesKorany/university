@@ -1,4 +1,7 @@
+import MyContext from '@/Context/Context'
 import type { Navigation } from '@/interfaces/navigation'
+import { useContext } from 'react'
+
 
 export const navigations: Navigation[] = [
   {
@@ -7,7 +10,7 @@ export const navigations: Navigation[] = [
   },
   {
     label: 'Competations',
-    path: 'popular-course', // '/popular-course',
+    path: 'competations', // '/popular-course',
   },
   {
     label: 'Testimonial',

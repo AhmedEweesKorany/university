@@ -1,5 +1,7 @@
 import type { Course } from '@/interfaces/course'
 
+
+
 export const data: Array<Course> = [
   {
     id: 1,
