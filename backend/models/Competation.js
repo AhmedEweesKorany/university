@@ -22,22 +22,14 @@ const Competation = {
   },
 
   // create a new competation
-  createCompetation: (data, callback) => {
-    const {
-      competation_name,
-      competation_category,
-      competation_author,
-      competation_image,
-    } = data;
+  createCompetation: (name,img,Auth, callback) => {
+    
     const query =
-      "INSERT INTO `competation`( `competation_name`, `competation_category`, `competation_author`, `competation_image`) VALUES (?,?,?,?)";
+      "INSERT INTO `competation`( `competation_name`, `competation_author`, `competation_image`) VALUES (?,?,?)";
     db.query(
       query,
       [
-        competation_name,
-        competation_category,
-        competation_author,
-        competation_image,
+        name,Auth,img
       ],
       (err, result) => {
         if (err) return callback(err, null);

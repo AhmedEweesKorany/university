@@ -105,7 +105,7 @@ const Team = {
 
   // get Team_id by leader_id
   getTeam_id :(leader_id,callback)=>{
-    db.query("SELECT `team_id` FROM `team` WHERE `leader_id` = ?",[leader_id],(err,data)=>{
+    db.query("SELECT `team_id`,`team_code` FROM `team` WHERE `leader_id` = ?",[leader_id],(err,data)=>{
       if(err) return callback(err,null)
       return callback(null,data)
     })

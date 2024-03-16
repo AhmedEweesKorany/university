@@ -3,8 +3,8 @@ const Competation = require("../models/Competation");
 //create competation
 
 const createCompetation = (req, res) => {
-  const compData = req.body;
-  Competation.createCompetation(compData, (err, data) => {
+  const {name,img,Auth} = req.query;
+  Competation.createCompetation(name,img,Auth, (err, data) => {
     if (err)
       return res.status(400).json({ message: "error happend", err: err });
 

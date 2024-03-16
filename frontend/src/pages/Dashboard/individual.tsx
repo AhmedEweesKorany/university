@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
+import { Typography } from '@mui/material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -36,7 +37,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 
- function content() {
+ export function Content({flag=true}) {
   const [data,setData] = React.useState([])
 
   // hanlde delete action
@@ -99,7 +100,22 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
   return (
   <>
-    <TableContainer component={Paper} sx={{color:"red"}}>
+  {!flag?   <Typography variant="h1" sx={{ fontSize: 40 ,ml:"40px",color:"main" }}>
+  Current Individual Ranking:
+</Typography>:null}
+    <TableContainer component={Paper} sx={!flag ? {
+      pt: {
+        xs: 6,
+        md: 8,
+      },
+      pb: {
+        xs: 8,
+        md: 12,
+      },
+      pl: "40px", 
+      pr: "40px",
+      backgroundColor: '#ecf3f3',
+    } : null}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
@@ -108,21 +124,20 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
             <StyledTableCell align="right">Email</StyledTableCell>
             <StyledTableCell align="right">in_Team</StyledTableCell>
             <StyledTableCell align="right">Score</StyledTableCell>
-            <StyledTableCell align="right">Actions</StyledTableCell>
-
+{flag?            <StyledTableCell align="right">Actions</StyledTableCell> : null}
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
+          {data.map((row,i) => (
             <StyledTableRow key={row.user_id}>
               <StyledTableCell >
-                {row.user_id}
+                {i+1}
               </StyledTableCell>
               <StyledTableCell align="right">{row.user_name}</StyledTableCell>
               <StyledTableCell align="right">{row.user_email}</StyledTableCell>
               <StyledTableCell align="right">{row.is_team == 1 ? "yes": "no"}</StyledTableCell>
               <StyledTableCell align="right">{row.points}</StyledTableCell>
-              <StyledTableCell align="right" sx={{display:"flex",gap:"20px"}}>
+          {flag?    <StyledTableCell align="right" sx={{display:"flex",gap:"20px"}}>
               <Button variant="contained" color="primary" onClick={()=>handleScore(row.user_id)}>
   Add Score
 </Button>
@@ -132,7 +147,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 <Button variant="contained" color="success" onClick={()=>handleMakeAdmin(row.user_id)}>
   Make Admin
 </Button>
-              </StyledTableCell>
+              </StyledTableCell>:null}
 
             </StyledTableRow>
           ))}
@@ -147,7 +162,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function individual(){
 
-  return <Index childern={content()}/>
+  return <Index childern={Content(true)}/>
 }
 
 // export default individual

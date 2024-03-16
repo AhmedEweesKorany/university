@@ -33,7 +33,7 @@ router.get("/getteamid/:id",teamController.getTeam_id)
 
 router.get("/getallcomp", cometationController.getAllCompetation);
 router.get("/getonecomp/:id", cometationController.getSingleCompetation);
-router.post("/createcomp", cometationController.createCompetation);
+router.get("/createcomp", cometationController.createCompetation);
 router.delete("/deletecomp/:id", cometationController.deleteCompetation);
 router.get("/compnamebyid/:id",cometationController.getCompnambyId)
 

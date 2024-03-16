@@ -124,52 +124,47 @@ function openUnsplashWebsite() {
     })
   }
 
- // handle add user
+ // handle add competation
  const handleAdd = ()=>{
-    let eventName : HTMLInputElement
-    let eventDes : HTMLInputElement
-    let eventTyp : HTMLInputElement
-    let eventComp : HTMLInputElement
+    let competationName : HTMLInputElement
+    let competationImg : HTMLInputElement
+    let competationAuthor : HTMLInputElement
   Swal.fire({
-      title:"Add Score" ,
+      title:"Create Competation" ,
       html: `
-      <input type="text" id="name" class="swal2-input" placeholder="Event Name">
-      <input type="text" id="des" class="swal2-input" placeholder="Event Description">
-      <input type="text" id="type" class="swal2-input" placeholder="Event Type">
-      <select class="swal2-input" id="comp" value=${value} onchange=${(e)=>setValue(e.target.value)}>
-      ${comp.map((item) => `<option value=${item.competation_id}>${item.competation_name}</option>`).join('')}
-      </select>
+      <input type="text" id="name" class="swal2-input" placeholder="Competation Name">
+      <input type="text" id="img" class="swal2-input" placeholder="Competation img">
+      <input type="text" id="author" class="swal2-input" placeholder="Competation Author">
+   
     `,
-      confirmButtonText:"Create Event",
+      confirmButtonText:"Create Competation",
       didOpen:()=>{
         const popup = Swal.getPopup()!
-          eventName = popup.querySelector("#name")
-          eventDes = popup.querySelector("#des")
-          eventTyp = popup.querySelector("#type")
-          eventComp = popup.querySelector("#comp")
-          eventName.onkeyup = (e)=>e.key == "Enter" && Swal.clickConfirm()
-          eventTyp.onkeyup = (e)=>e.key == "Enter" && Swal.clickConfirm()
-          eventComp.onkeyup = (e)=>e.key == "Enter" && Swal.clickConfirm()
-          eventDes.onkeyup = (e)=>e.key == "Enter" && Swal.clickConfirm()
+        competationName = popup.querySelector("#name")
+        competationImg = popup.querySelector("#img")
+        competationAuthor = popup.querySelector("#author")
+        competationName.onkeyup = (e)=>e.key == "Enter" && Swal.clickConfirm()
+        competationImg.onkeyup = (e)=>e.key == "Enter" && Swal.clickConfirm()
+        competationAuthor.onkeyup = (e)=>e.key == "Enter" && Swal.clickConfirm()
       },
       preConfirm:()=>{
-        const NameVal = eventName.value
-        const desVal = eventDes.value
-        const typVal = eventTyp.value
-        const compVal = eventComp.value
-        if(!NameVal||!desVal||!typVal||!compVal){
+        const NameVal = competationName.value
+        const imgVal = competationImg.value
+        const AuthVal = competationAuthor.value
+        if(!NameVal||!imgVal||!AuthVal){
           Swal.showValidationMessage("Please Enter Valid Data")
         }else{
-          axios.get(`http://localhost:4010/createevent`,{
+          axios.get(`http://localhost:4010/createcomp`,{
               params:{
                   name:NameVal,
-                  des:desVal,
-                  type:typVal,
-                  comp:compVal
+                  img:imgVal,
+                  Auth:AuthVal,
               }
           }).then(Data=>{
-            Swal.fire("Event Updated..Refresh needed","","success")
-          }).catch(e=>{
+            Swal.fire("Competation Creatd","","success")
+            axios.get("http://localhost:4010/getallcomp").then(data=>{
+              setData(data.data.data)   
+            })          }).catch(e=>{
             console.log(e)
             Swal.fire("error","","error")
           })
@@ -195,10 +190,10 @@ function openUnsplashWebsite() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
+          {data.map((row,i) => (
               <StyledTableRow key={row.competation_id}>
               <StyledTableCell >
-                {row.competation_id}
+                {i+1}
               </StyledTableCell>
               <StyledTableCell align="right">{row.competation_name}</StyledTableCell>
               <StyledTableCell align="right" onClick={()=> openImg(row.competation_image)}>{row.competation_image}</StyledTableCell>

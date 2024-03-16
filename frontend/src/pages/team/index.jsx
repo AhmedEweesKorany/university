@@ -13,11 +13,12 @@ import { TextField } from '@mui/material'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import Link from 'next/link'
+import { toast } from 'react-toastify';
 
 const create = () => {
   const [code, setCode] = useState('')
   const [login, setLogin] = useState(false)
-  
+  const [leader, setLeader] = useState([])
   const router = useRouter()
 
   useEffect(() => {
@@ -25,8 +26,18 @@ const create = () => {
       console.log(jwtDecode(localStorage.getItem('token')))
       setLogin(true)
     }
-  }, [])
 
+    axios
+      .get(`http://localhost:4010/getteamid/${jwtDecode(localStorage.getItem('token')).id}`)
+      .then((data) => setLeader(data.data.data))
+  }, [])
+  // handle copy team cde
+  const handleCopy = ()=>{
+    navigator.clipboard.writeText(leader[0].team_code)
+    toast.success("Text Copied To clipboard",{position:"bottom-center"})
+
+  }
+  // handle join team
   const handleJoinTeam = () => {
     if (login) {
       if (!code) {
@@ -48,13 +59,13 @@ const create = () => {
               const memberCount = res.data.data[0].current_member
               //check if user in another team or not
               const isUserInAnotherTeam = jwtDecode(localStorage.getItem('token')).isTeam
-              if (isUserInAnotherTeam || localStorage.getItem("inTeam") ) {
+              if (isUserInAnotherTeam || localStorage.getItem('inTeam')) {
                 return Swal.fire({
                   title: 'You are Already In Team !',
                   icon: 'error',
                 })
               }
-              
+
               // check max team members
               if (memberCount >= 5) {
                 return Swal.fire({
@@ -98,7 +109,7 @@ const create = () => {
                   icon: 'success',
                 })
 
-                localStorage.setItem("inTeam",true)
+                localStorage.setItem('inTeam', true)
               }
             } else {
               Swal.fire({
@@ -122,83 +133,88 @@ const create = () => {
 
   const handleCreateTeam = () => {
     if (login) {
-
-        const isUserInAnotherTeam = jwtDecode(localStorage.getItem('token')).isTeam
-        if (isUserInAnotherTeam || localStorage.getItem('inTeam')) {
-          return Swal.fire({
-            title: 'You are Already In Team !',
-            icon: 'error',
-          })
-        }else{
-          router.push("/team/create")
-        }
-  
+      const isUserInAnotherTeam = jwtDecode(localStorage.getItem('token')).isTeam
+      if (isUserInAnotherTeam || localStorage.getItem('inTeam')) {
+        return Swal.fire({
+          title: 'You are Already In Team !',
+          icon: 'error',
+        })
+      } else {
+        router.push('/team/create')
+      }
     } else {
       router.push('/login')
     }
   }
   return (
-    <div className="teams-area">
-      <Card sx={{ maxWidth: 345 }}>
-        <CardMedia
-          sx={{ height: 140 }}
-          image="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dGVhbXxlbnwwfHwwfHx8MA%3D%3D"
-          title="join to existing team by entering team code"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Join To Team
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            you can join to any team by add team code to below input and press join
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <TextField
-            id="code-area"
-            label="Enter Code"
-            variant="outlined"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
+    <div className="parent">
+      {leader.length > 0 ? (
+        <Button variant="contained" color="info" sx={{ position: 'absolute', left: '45%', mt: '40px', width: '200px' }} onClick={handleCopy}>
+          Copy Your Team Code
+        </Button>
+      ) : null}
+      <div className="teams-area">
+        <Card sx={{ maxWidth: 345 }}>
+          <CardMedia
+            sx={{ height: 140 }}
+            image="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dGVhbXxlbnwwfHwwfHx8MA%3D%3D"
+            title="join to existing team by entering team code"
           />
-          <Button
-            variant="text"
-            color="primary"
-            sx={{ width: '130px', '&:hover': { backgroundColor: 'primary.main', color: 'primary.contrastText' } }}
-            onClick={handleJoinTeam}
-          >
-            {' '}
-            Join Now !{' '}
-          </Button>{' '}
-        </CardActions>
-      </Card>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              Join To Team
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              you can join to any team by add team code to below input and press join
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <TextField
+              id="code-area"
+              label="Enter Code"
+              variant="outlined"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+            />
+            <Button
+              variant="text"
+              color="primary"
+              sx={{ width: '130px', '&:hover': { backgroundColor: 'primary.main', color: 'primary.contrastText' } }}
+              onClick={handleJoinTeam}
+            >
+              {' '}
+              Join Now !{' '}
+            </Button>{' '}
+          </CardActions>
+        </Card>
 
-      {/* create team area  */}
-      <Card sx={{ maxWidth: 345 }}>
-        <CardMedia
-          sx={{ height: 140 }}
-          image="https://plus.unsplash.com/premium_photo-1661509878848-e37c58643e14?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8dGVhbSUyMGJ1aWxkaW5nfGVufDB8fDB8fHww"
-          title="create your own team"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Create Your own Team
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            You can create Your own team and if you want to add member you can send the team code to them
-          </Typography>
-        </CardContent>
-        <CardActions>
-     <Button
-            variant="text"
-            color="primary"
-            sx={{ width: '100%', '&:hover': { backgroundColor: 'primary.main', color: 'primary.contrastText' } }}
-            onClick={handleCreateTeam}
-          >
-            Create Now !
-          </Button>
-        </CardActions>
-      </Card>
+        {/* create team area  */}
+        <Card sx={{ maxWidth: 345 }}>
+          <CardMedia
+            sx={{ height: 140 }}
+            image="https://plus.unsplash.com/premium_photo-1661509878848-e37c58643e14?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8dGVhbSUyMGJ1aWxkaW5nfGVufDB8fDB8fHww"
+            title="create your own team"
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              Create Your own Team
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              You can create Your own team and if you want to add member you can send the team code to them
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button
+              variant="text"
+              color="primary"
+              sx={{ width: '100%', '&:hover': { backgroundColor: 'primary.main', color: 'primary.contrastText' } }}
+              onClick={handleCreateTeam}
+            >
+              Create Now !
+            </Button>
+          </CardActions>
+        </Card>
+      </div>
     </div>
   )
 }

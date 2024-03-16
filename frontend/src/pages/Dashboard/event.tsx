@@ -92,7 +92,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
                     des:desVal
                 }
             }).then(Data=>{
-              Swal.fire("Event Updated..Refresh needed","","success")
+              Swal.fire("Event Updated","","success")
+              axios.get("http://localhost:4010/getallevents").then(data=>{
+                setData(data.data.data)   
+              })
             }).catch(e=>{
               console.log(e)
               Swal.fire("error","","error")
@@ -146,7 +149,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
                   comp:compVal
               }
           }).then(Data=>{
-            Swal.fire("Event Updated..Refresh needed","","success")
+            Swal.fire("Event Updated","","success")
+            axios.get("http://localhost:4010/getallevents").then(data=>{
+              setData(data.data.data)   
+            })
           }).catch(e=>{
             console.log(e)
             Swal.fire("error","","error")
@@ -173,10 +179,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
+          {data.map((row,i) => (
               <StyledTableRow key={row.event_id}>
               <StyledTableCell >
-                {row.event_id}
+                {i+1}
               </StyledTableCell>
               <StyledTableCell align="right">{row.event_title}</StyledTableCell>
               <StyledTableCell align="right">{row.event_type}</StyledTableCell>
