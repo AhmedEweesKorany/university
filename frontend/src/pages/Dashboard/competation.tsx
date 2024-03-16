@@ -39,15 +39,37 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
  function content() {
   const [data,setData] = React.useState([])
-    const [comp,setComp] = React.useState([])
-    const [value,setValue] = React.useState("")
+
+  
+function openUnsplashWebsite() {
+    // Open Unsplash website in a new tab
+    window.open("https://unsplash.com/", "_blank");
+  }
+
+  function openImg(url) {
+    // Open Unsplash website in a new tab
+    window.open(url, "_blank");
+  }
     React.useEffect(()=>{
-        axios.get("http://localhost:4010/getallevents").then(data=>{
+        axios.get("http://localhost:4010/getallcomp").then(data=>{
           setData(data.data.data)   
         })
-    
-        axios.get("http://localhost:4010/getallcomp").then(data=>setComp(data.data.data)   
-    )
+
+ // Show Swal alert with custom HTML content
+ Swal.fire({
+    title: 'Images are allowed from Unsplash website only',
+    html: 'You can find images on <button id="unsplash-link" class="swal2-confirm swal2-styled" style="background-color: #f8bb86; color: #1a1a1a;">Unsplash</button>',
+    icon: 'warning',
+    allowOutsideClick: false,
+    confirmButtonText: 'OK',
+    didOpen: () => {
+      // Attach click event to the button
+      const unsplashButton = document.getElementById('unsplash-link');
+      if (unsplashButton) {
+        unsplashButton.addEventListener('click', openUnsplashWebsite);
+      }
+    }
+  });
       },[])
 
   // hanlde delete action
@@ -64,8 +86,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   const handleUpdate = (id)=>{
       let eventName : HTMLInputElement
       let eventDes : HTMLInputElement
-    Swal.fire({
-        title:"Add Score" ,
+      Swal.fire({
+          title:"Add Score" ,
         html:`
         <input type="text" id="name" class="swal2-input" placeholder="Event Name">
         <input type="text" id="des" class="swal2-input" placeholder="Event Description">
@@ -99,7 +121,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
             })
           }
         }
-      })
+    })
   }
 
  // handle add user
@@ -163,10 +185,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell align="right">Event id</StyledTableCell>
-            <StyledTableCell align="right">Event Name</StyledTableCell>
-            <StyledTableCell align="right">Event Type</StyledTableCell>
-            <StyledTableCell align="right">Event Description</StyledTableCell>
+            <StyledTableCell align="left">Competation id</StyledTableCell>
+            <StyledTableCell align="right">Competation Name</StyledTableCell>
+            <StyledTableCell align="right">Competation iamge</StyledTableCell>
+            <StyledTableCell align="right">Competation Author</StyledTableCell>
 
             <StyledTableCell align="right">Actions</StyledTableCell>
 
@@ -174,19 +196,20 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         </TableHead>
         <TableBody>
           {data.map((row) => (
-              <StyledTableRow key={row.event_id}>
+              <StyledTableRow key={row.competation_id}>
               <StyledTableCell >
-                {row.event_id}
+                {row.competation_id}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.event_title}</StyledTableCell>
-              <StyledTableCell align="right">{row.event_type}</StyledTableCell>
-              <StyledTableCell align="right">{row.event_des }</StyledTableCell>
+              <StyledTableCell align="right">{row.competation_name}</StyledTableCell>
+              <StyledTableCell align="right" onClick={()=> openImg(row.competation_image)}>{row.competation_image}</StyledTableCell>
+
+              <StyledTableCell align="right">{row.competation_author}</StyledTableCell>
 
               <StyledTableCell align="right" sx={{display:"flex",gap:"20px"}}>
-              <Button variant="contained" color="success" onClick={()=>handleUpdate(row.event_id)}>
+              <Button variant="contained" color="success" onClick={()=>handleUpdate(row.competation_id)}>
   Update
 </Button>
-      <Button variant="outlined" color="error" onClick={()=>handleDelete(row.event_id)}>
+      <Button variant="outlined" color="error" onClick={()=>handleDelete(row.competation_id)}>
   Delete
 </Button>
 
@@ -198,7 +221,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
       </Table>
     </TableContainer>
     <Button variant="contained" color="info" sx={{width:"400px",mt:"40px",float:"right"}} onClick={handleAdd} >
-  Add New Event
+  Add New Competation
 </Button>
   </>
     
