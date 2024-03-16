@@ -5,7 +5,8 @@ const bcrypt = require("bcrypt");
 const User = {
   //get all users
   getAllUsers: (callback) => {
-    const query = "SELECT * FROM `users`";
+    const query =
+      "SELECT `user_id`, `user_name`, `user_email`, `is_team`,`points` FROM `users` WHERE isAdmin = 0 ORDER BY `points` DESC";
     db.query(query, (err, result) => {
       if (err) return callback(err, null);
 
@@ -83,11 +84,11 @@ const User = {
   },
 
   // add user to comp
-  addUserToComp: ( userdata, callback) => {
-    const { id,com_id } = userdata;
+  addUserToComp: (userdata, callback) => {
+    const { id, com_id } = userdata;
     db.query(
       "SELECT * FROM `users_in_competation` WHERE user_id = ? AND competation_id=?",
-      [id,com_id],
+      [id, com_id],
       (err, data) => {
         if (err) {
           return callback(err, null);
@@ -97,7 +98,7 @@ const User = {
         } else {
           const query =
             "INSERT INTO `users_in_competation`( `user_id`, `competation_id`) VALUES (?,?)";
-          db.query(query, [id,com_id], (err, result) => {
+          db.query(query, [id, com_id], (err, result) => {
             if (err) {
               console.log("error:", err);
               return callback(err, null);
@@ -109,11 +110,28 @@ const User = {
     );
   },
   // change isteam state
-  changeTeamState:(id,callback)=>{
-    const query = "UPDATE `users` SET `is_team` = 1 WHERE user_id = ?"
-    db.query(query,[id],(err,data)=>{
-      if(err) return callback(err,null) 
+  changeTeamState: (id, callback) => {
+    const query = "UPDATE `users` SET `is_team` = 1 WHERE user_id = ?";
+    db.query(query, [id], (err, data) => {
+      if (err) return callback(err, null);
 
+      return callback(null, data);
+    });
+  },
+
+  makeAdmin: (id, callback) => {
+    const query = "UPDATE `users` SET `isAdmin` = 1 WHERE user_id = ?";
+    db.query(query, [id], (err, data) => {
+      if (err) return callback(err, null);
+
+      return callback(null, data);
+    });
+  },
+
+  updateScore:(id,points,callback)=>{
+    const query = "UPDATE `users` SET `points` = ? WHERE user_id = ?";
+    db.query(query,[points,id],(err,data)=>{
+      if(err) return callback(err,null)
       return callback(null,data)
     })
   }

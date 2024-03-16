@@ -12,7 +12,8 @@ import '@/styles/react-slick.css'
 import { NextPageWithLayout } from '@/interfaces/layout'
 import MyContext from "../Context/Context"
 import  { jwtDecode } from "jwt-decode"
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import 'slick-carousel/slick/slick-theme.css'
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -55,6 +56,7 @@ const App: FC<AppPropsWithLayout> = (props: AppPropsWithLayout) => {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         {getLayout(<Component {...pageProps} />)}
+        <ToastContainer />
       </MUIProvider>
     </CacheProvider>
     </MyContext.Provider>

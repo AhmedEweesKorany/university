@@ -23,13 +23,27 @@ const Competation = {
 
   // create a new competation
   createCompetation: (data, callback) => {
-    const { competation_name, competation_category, competation_author,competation_image } = data;
+    const {
+      competation_name,
+      competation_category,
+      competation_author,
+      competation_image,
+    } = data;
     const query =
       "INSERT INTO `competation`( `competation_name`, `competation_category`, `competation_author`, `competation_image`) VALUES (?,?,?,?)";
-    db.query(query, [competation_name,competation_category, competation_author,competation_image], (err, result) => {
-      if (err) return callback(err, null);
-      return callback(null, result);
-    });
+    db.query(
+      query,
+      [
+        competation_name,
+        competation_category,
+        competation_author,
+        competation_image,
+      ],
+      (err, result) => {
+        if (err) return callback(err, null);
+        return callback(null, result);
+      }
+    );
   },
 
   //delete compeatation by id
@@ -40,6 +54,15 @@ const Competation = {
     db.query(query, [id], (err, data) => {
       if (err) return callback(err, null);
       return callback(null, data);
+    });
+  },
+
+  // get competaion name by id
+  getCompnamebyId: (id, callback) => {
+    db.query("SELECT `competation_name` FROM `competation` WHERE competation_id = ?",[id],(err,data)=>{
+      if(err) return callback(err,null)
+
+      return callback(null,data)
     });
   },
 };

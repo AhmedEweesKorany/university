@@ -3,8 +3,8 @@ const Event = require("../models/Event");
 //create event
 
 const createEvent = (req, res) => {
-  const compData = req.body;
-  Event.createEvent(compData, (err, data) => {
+  const {name,des,type,comp} = req.query;
+  Event.createEvent(name,des,type,comp ,(err, data) => {
     if (err)
       return res.status(400).json({ message: "error happend", err: err });
 
@@ -47,18 +47,18 @@ const getEventInComp = (req, res) => {
 
 // update event
 
-// const updateUser = (req,res)=>{
-//     const {id} = req.params
-//     const userdata = req.body
-//     User.updateUser(id,userdata,(err,data)=>{
-//         if (err)
-//         return res.status(400).json({ message: "error happend", err: err });
+const updateEvent = (req,res)=>{
+    const {id} = req.params
+    const {name,des} = req.query
+    Event.updateEvent(id,name,des,(err,data)=>{
+        if (err)
+        return res.status(400).json({ message: "error happend", err: err });
 
-//       return res
-//         .status(200)
-//         .json({ message: "user updated successfully" });
-//     })
-// }
+      return res
+        .status(200)
+        .json({ message: "event updated successfully" });
+    })
+}
 
 // delete event
 
@@ -75,5 +75,5 @@ const deleteEvent = (req, res) => {
   });
 };
 module.exports = {
-  createEvent,deleteEvent,getAllEvents,getSingleEvent,getEventInComp
+  createEvent,deleteEvent,getAllEvents,getSingleEvent,getEventInComp,updateEvent
 };

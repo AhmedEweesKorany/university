@@ -12,29 +12,38 @@ router.post("/adduser", userController.createUser);
 router.get("/getAllusers", userController.getAllUsers);
 router.get("/getoneuser/:id", userController.getSingleUser);
 router.put("/updateuser/:id", userController.updateUser);
+router.put("/makeadmin/:id",userController.makeUserAdmin)
 router.delete("/deleteuser/:id", userController.deleteUser);
 router.post("/addusertocomp",userController.addUserToComp)
 router.get("/changeteamstate",userController.changeTeamState)
-
+router.get("/updatescore/:id",userController.updateScore)
 
 //teams operations 
 
 router.get("/getteambycode",teamController.getTeamByCode)
+router.get("/getteambyname",teamController.getTeamByName)
+router.get("/createteam",teamController.createTeam)
+router.get("/getallteams",teamController.getAllTeams)
+router.delete("/deleteteam/:id",teamController.deleteTeam)
 router.post("/addmembertoteam",teamController.addMember)
-
+router.get("/updateteamscore/:id",teamController.updateScore)
+router.get("/getteambyleader/:id",teamController.getTeamByLeader)
+router.get("/getteamid/:id",teamController.getTeam_id)
 //competation operations
 
 router.get("/getallcomp", cometationController.getAllCompetation);
 router.get("/getonecomp/:id", cometationController.getSingleCompetation);
 router.post("/createcomp", cometationController.createCompetation);
 router.delete("/deletecomp/:id", cometationController.deleteCompetation);
+router.get("/compnamebyid/:id",cometationController.getCompnambyId)
 
 // Event operations
 router.get("/getallevents", eventController.getAllEvents);
 router.get("/getoneevent/:id", eventController.getSingleEvent);
 router.get("/geteventincomp/:id", eventController.getEventInComp);
-router.post("/createevent", eventController.createEvent);
+router.get("/createevent", eventController.createEvent);
 router.delete("/deleteevent/:id", eventController.deleteEvent);
+router.get("/updateevent/:id",eventController.updateEvent)
 
 // login and register
 router.post("/api/login", authController.userLogin);

@@ -12,6 +12,8 @@ import Typography from '@mui/material/Typography'
 import { TextField } from '@mui/material'
 import { useRouter } from 'next/router'
 import axios from 'axios'
+import Link from 'next/link'
+
 const create = () => {
   const [code, setCode] = useState('')
   const [login, setLogin] = useState(false)
@@ -52,7 +54,7 @@ const create = () => {
                   icon: 'error',
                 })
               }
-
+              
               // check max team members
               if (memberCount >= 5) {
                 return Swal.fire({
@@ -69,8 +71,8 @@ const create = () => {
                 if (item == userEmail) {
                   flag = true
                   return Swal.fire({
-                    title: 'you are already in this team !',
-                    icon: 'info',
+                    title: 'Team is Full !!',
+                    icon: 'error',
                   })
                 }
               })
@@ -120,7 +122,17 @@ const create = () => {
 
   const handleCreateTeam = () => {
     if (login) {
-      console.log('team created successuflly')
+
+        const isUserInAnotherTeam = jwtDecode(localStorage.getItem('token')).isTeam
+        if (isUserInAnotherTeam || localStorage.getItem('inTeam')) {
+          return Swal.fire({
+            title: 'You are Already In Team !',
+            icon: 'error',
+          })
+        }else{
+          router.push("/team/create")
+        }
+  
     } else {
       router.push('/login')
     }
@@ -177,7 +189,7 @@ const create = () => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button
+     <Button
             variant="text"
             color="primary"
             sx={{ width: '100%', '&:hover': { backgroundColor: 'primary.main', color: 'primary.contrastText' } }}

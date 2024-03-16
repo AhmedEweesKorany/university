@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/jsx-filename-extension */
-// pages/posts/[slug].js
+
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
@@ -32,6 +32,44 @@ export default function Competation() {
       setLogin(true)
     }
   }, [])
+
+  const handleApplyCompAsTeam = () => {
+    if (login) {
+      const id = jwtDecode(localStorage.getItem('token')).id
+
+      axios.get(`http://localhost:4010/getteamid/${id}`).then((data) =>{
+        if(data.data.data[0]?.team_id == undefined){
+          Swal.fire({
+            title:"You aren't a team leader",
+            icon:"error"
+          })
+        }else{
+            axios.get(`http://localhost:4010/getteambyleader/${id}`,{
+        params:{
+          team_id:data.data.data[0]?.team_id,
+          comp_id:comId
+        }
+      }).then(data=>{
+            Swal.fire({
+          title: 'applied succesffully',
+          icon: 'success',
+        })
+      }).catch((e)=>{
+        console.log(e)
+        Swal.fire({
+          title:e.response.data.err,
+          icon:'error'
+        })
+      })
+        }
+      })
+
+
+    
+    } else {
+      router.push('/login')
+    }
+  }
 
   const handleApplyComp = () => {
     if (login) {
@@ -79,7 +117,7 @@ export default function Competation() {
           variant="text"
           color="primary"
           sx={{ width: '300px', '&:hover': { backgroundColor: 'primary.main', color: 'primary.contrastText' } }}
-          onClick={handleApplyComp}
+          onClick={handleApplyCompAsTeam}
         >
           Apply as Team !
         </Button>

@@ -67,6 +67,18 @@ const deleteCompetation = (req,res)=>{
         .json({ message: "competation deleted successfully" });
     })
 }
+
+const getCompnambyId =(req,res)=>{
+  const {id} = req.params
+  Competation.getCompnamebyId(id,(err,data)=>{
+    if (err)
+    return res.status(400).json({ message: "error happend", err: err });
+
+  return res
+    .status(200)
+    .json({ message: " successfully",data:data });
+  })
+} 
 module.exports = {
-  createCompetation,getAllCompetation,getSingleCompetation,deleteCompetation
+  createCompetation,getAllCompetation,getSingleCompetation,deleteCompetation,getCompnambyId
 };

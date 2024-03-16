@@ -9,6 +9,7 @@ const AuthNavigation: FC = () => {
   const handleLogout = ()=>{
     setData("")
     localStorage.removeItem("token")
+    localStorage.removeItem("inTeam")
   }
   return (
     <Box sx={{ '& button:first-child': { mr: 2 } }}>

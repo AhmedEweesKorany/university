@@ -22,7 +22,7 @@ const Event = {
   },
 
   // get events in specific competation
-  getEventWithComp:(id,callback)=>{
+  getEventWithComp: (id, callback) => {
     const query = "SELECT * FROM `event` WHERE competation_id = ?";
     db.query(query, [id], (err, result) => {
       if (err) return callback(err, null);
@@ -30,22 +30,14 @@ const Event = {
     });
   },
   // create a new events
-  createEvent: (data, callback) => {
-    const { event_title, event_des,event_type } = data;
+  createEvent: (name,des,type,comp, callback) => {
+   
     const query =
-      "INSERT INTO `event`(`event_title`, `event_type`, `event_des`) VALUES (?,?,?)";
-    db.query(
-      query,
-      [
-        event_title,
-        event_type,
-        event_des,
-      ],
-      (err, result) => {
-        if (err) return callback(err, null);
-        return callback(null, result);
-      }
-    );
+      "INSERT INTO `event`(`event_title`, `event_type`, `event_des`,`competation_id`) VALUES (?,?,?,?)";
+    db.query(query, [name,type,des,comp], (err, result) => {
+      if (err) return callback(err, null);
+      return callback(null, result);
+    });
   },
 
   //delete event by id
@@ -56,6 +48,15 @@ const Event = {
     db.query(query, [id], (err, data) => {
       if (err) return callback(err, null);
       return callback(null, data);
+    });
+  },
+
+  //update event
+  updateEvent: (id, name,des, callback) => {
+
+    db.query("UPDATE `event` SET `event_title`= ? ,`event_des`= ? WHERE event_id = ?",[name,des,id],(err,data)=>{
+      if(err) return callback(err,null)
+      return callback(null,data)
     });
   },
 };

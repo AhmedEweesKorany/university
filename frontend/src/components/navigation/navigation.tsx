@@ -106,7 +106,7 @@ const Navigation: FC = () => {
             Competations
           </Box>
 
-       <Link href="/Dashboard">
+       <Link href="/Dashboard/individual">
 
        <Box
             component={ScrollLink}

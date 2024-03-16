@@ -19,7 +19,7 @@ const getAllUsers = (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "user created successfully", data: data });
+      .json({ message: "successfully", data: data });
   });
 };
 
@@ -87,7 +87,27 @@ const changeTeamState = (req,res)=>{
   return res.status(200).json({ message: "success" });
   })
 }
+
+const makeUserAdmin = (req,res)=>{
+  const {id} = req.params
+  User.makeAdmin(id,(err,data)=>{
+
+    if(err) return res.status(400).json({ message: "error eweees", err: err });
+
+  return res.status(200).json({ message: "success" });
+  })
+}
+
+const updateScore = (req,res)=>{
+  const {id} = req.params
+  const score = req.query.score
+  User.updateScore(id,score,(err,data)=>{
+    if(err) return res.status(400).json({ message: "error eweees", err: err });
+
+    return res.status(200).json({ message: "success" });
+  })
+}
 module.exports = {
   createUser,
-  getAllUsers,updateUser,deleteUser,getSingleUser,addUserToComp,changeTeamState
+  getAllUsers,updateUser,deleteUser,getSingleUser,addUserToComp,changeTeamState,makeUserAdmin,updateScore
 };

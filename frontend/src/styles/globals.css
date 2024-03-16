@@ -89,3 +89,23 @@ body {
   height: 100vh;
   gap: 30px;
 }
+
+/*create team area*/
+
+.create-team-area {
+  height: 100vh;
+  margin-top: 40px;
+
+  .container {
+    height: 100vh;
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      /* justify-content: space-between; */
+      gap: 40px;
+      align-items: center;
+      height: 100%;
+    }
+  }
+}
